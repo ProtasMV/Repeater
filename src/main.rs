@@ -19,7 +19,6 @@ fn main() {
 }
 
 fn user_parameters() -> (String, i32) {
-
     print!("Что бы вы хотел ввести? ");
     flush();
 

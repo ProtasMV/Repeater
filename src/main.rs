@@ -1,5 +1,5 @@
 use std::io::{self, Write};
-
+use colored::*;
 fn main() {
     
     loop {
@@ -19,19 +19,20 @@ fn main() {
 }
 
 fn user_parameters() -> (String, i32) {
-    print!("Что бы вы хотел ввести? ");
+    println!("Made by: @ProtasMV");
+    print!("{}", "What would you like to enter? ".yellow());
     flush();
 
     let user_messege = input();
 
     let user_quantity = loop {    
 
-        print!("Сколько раз вы бы хотели ето вывести? ");
+        print!("{}", "How many times would you like to print it? ".yellow());
         flush();
     
         let user_quantity: i32 = match input().trim().parse() {
             Ok(quantity) => quantity,
-            Err(er) => {println!("Произошла ошибка: {er}, попробуйте ещё раз"); continue}
+            Err(er) => {println!("An error occurred: {er}, please try again"); continue}
         };
         
         break user_quantity;
@@ -43,7 +44,7 @@ fn user_parameters() -> (String, i32) {
 fn flush() {
     match io::stdout().flush() {
         Ok(_) =>{},
-        Err(er) => {println!("Произошла ошибка: {er}, выход с программы...")}    
+        Err(er) => {println!("An error occurred: {er}")}    
     }    
 }
 
@@ -51,7 +52,7 @@ fn input() -> String{
     let mut data = String::new();
     match io::stdin().read_line(&mut data) {
         Ok(_) => {},
-        Err(er) => println!("Произошла ошибка: {er}")        
+        Err(er) => println!("An error occurred: {er}")        
     };
     data
 }
@@ -61,17 +62,17 @@ fn want_cont() -> bool {
 
     loop {
         println!();
-        print!("Продолжить? (Да/Нет): ");
+        print!("{}", "Continue? (Yes/No): ".yellow());
         flush();
 
         match io::stdin().read_line(&mut user_cont) {
             Ok(_) => {},
-            Err(er) => println!("Произошла ошибка: {er}")
+            Err(er) => println!("An error occurred: {er}")
         }
 
         match user_cont.trim().to_lowercase().as_str() {
-            "1"|"да" => {user_cont.clear(); break true},
-            "2"|"нет" => {user_cont.clear(); break false},
+            "1"|"yes"|"y" => {user_cont.clear(); break true},
+            "2"|"no"|"n" => {user_cont.clear(); break false},
             _=> {user_cont.clear(); println!("Неудалось распознать ваш ввод, попробуйте ещё раз"); continue},
         }
     }

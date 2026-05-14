@@ -1,15 +1,16 @@
 use std::io::{self, Write};
 use colored::*;
-fn main() {
-    
-    loop {
-        let mut cycles = 0;    
-        
-        let (user_messege, user_quantity) = user_parameters();
 
-        while cycles < user_quantity {
+const SYS_COLOR: Color = Color::TrueColor {r: 255, g: 255, b: 0};
+const AUTOR_COLOR: Color = Color::TrueColor {r: 255, g: 165, b: 0};
+
+fn main() {
+    println!("{}", "Made by: @ProtasMV".color(AUTOR_COLOR).bold());    
+    loop {
+        let (user_messege, user_quantity) = user_parameters();
+        
+        for _ in 0..user_quantity {
             println!("{}", user_messege.trim());
-            cycles += 1;
         }
     
         if !want_cont() {
@@ -18,19 +19,17 @@ fn main() {
     }
 }
 
-fn user_parameters() -> (String, i32) {
-    println!("Made by: @ProtasMV");
-    print!("{}", "What would you like to enter? ".yellow());
+fn user_parameters() -> (String, u32) {
+    print!("{}", "What would you like to enter? ".color(SYS_COLOR));
     flush();
 
     let user_messege = input();
-
     let user_quantity = loop {    
 
-        print!("{}", "How many times would you like to print it? ".yellow());
+        print!("{}", "How many times would you like to print it? ".color(SYS_COLOR));
         flush();
     
-        let user_quantity: i32 = match input().trim().parse() {
+        let user_quantity: u32 = match input().trim().parse() {
             Ok(quantity) => quantity,
             Err(er) => {println!("An error occurred: {er}, please try again"); continue}
         };
@@ -38,6 +37,7 @@ fn user_parameters() -> (String, i32) {
         break user_quantity;
     };
 
+    println!();    
     (user_messege, user_quantity)
 }
 
@@ -58,22 +58,17 @@ fn input() -> String{
 }
 
 fn want_cont() -> bool {
-    let mut user_cont = String::new();
-
     loop {
         println!();
-        print!("{}", "Continue? (Yes/No): ".yellow());
+        print!("{}", "Continue? (Yes/No): ".color(SYS_COLOR));
         flush();
 
-        match io::stdin().read_line(&mut user_cont) {
-            Ok(_) => {},
-            Err(er) => println!("An error occurred: {er}")
-        }
+        let mut user_cont = input();
 
         match user_cont.trim().to_lowercase().as_str() {
             "1"|"yes"|"y" => {user_cont.clear(); break true},
             "2"|"no"|"n" => {user_cont.clear(); break false},
-            _=> {user_cont.clear(); println!("Неудалось распознать ваш ввод, попробуйте ещё раз"); continue},
+            _=> {user_cont.clear(); println!("Could not recognize your input, please try again"); continue},
         }
     }
 }
